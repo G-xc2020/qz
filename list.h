@@ -15,9 +15,14 @@ typedef struct list_{
 void initList(List *);
 void addHead(List *,DataType);
 void addTail(List *,DataType);
-void delNode(List *,DataType);
-Node *getNode(List *,DataType);
+void insertList(List *,int,DataType);
+void delList(List *,int);
+void isEmpty(List *);
+DataType getdata(List *,int);
+Node* find(List *,DataType);
+void printList(List *);
 int getLength(List *);
 void dispList(List *);
+void clearList(List *);
 
 #endif

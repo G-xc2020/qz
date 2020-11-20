@@ -1,10 +1,28 @@
 
 #include"list.h"
+
 void initList(List *list){
 	list->head = NULL;
 	list->tail = NULL;
 	list->current = NULL;
 	return;
+}
+int sizeList(List *list){
+	Node *node = list->head;
+	int size=0;
+	if (node == NULL){
+		return size=0;
+	}
+	while(node !=NULL){
+		size++;
+		node = node->next;
+	}
+	return size;
+}
+void isEmpty(List *list){
+	if(list->head == NULL){
+		return;
+	}
 }
 void addHead(List *list,DataType data){
 	Node *node = (Node *)malloc(sizeof(Node));
@@ -13,7 +31,7 @@ void addHead(List *list,DataType data){
 	if(list->head == NULL){
 		list->tail = node;
 	}else{
-	node->next = list->head;
+		node->next = list->head;
 	}
 	list->head = node;
 	return;
@@ -23,35 +41,85 @@ void addTail(List *list,DataType data){
 	node->data = data;
 	node->next = NULL;
 	if(list->head == NULL){
-	list->head = node;
+		list->head = node;
 	}else{
-	list->tail->next = node;
+		list->tail->next = node;
 	}
 	list->tail == node;
 	return;
 }
-void delNode(List *list,DataType data){
-	Node *prev = list->head;
-	Node *node = prev->next;
-	while(node!=NULL){
-		if(node->data == data){
-			prev->next = prev->next->next;
+void insertList(List *list,int k,DataType data){
+	Node *node = (Node*)malloc(sizeof(Node));
+	Node *prev = (Node *)malloc(sizeof(Node));
+	if(k<=1){
+		node->data = data;
+		node->next = NULL;
+		if(list->head == NULL){
+			list->tail = node;
 		}else{
-			prev->next = node;
+			node->next = list->head;
 		}
+		list->head = node;
+	}else{
+		prev = list->head;
+		node->data = data;
+		node->next = NULL;
+		if(list->head == NULL){
+			list->tail = node;
+		}
+		for(int size=1;size<k-1;size++){
+			prev = prev->next;
+		}
+		node->next = prev->next;
+		prev->next = node;
 	}
+	node=list->head;
+	while(node->next != NULL){
+		node=node->next;
+	}
+	list->tail=node;
 }
-Node *getNode(List *list, DataType data){
-	Node *node = (Node *)malloc(sizeof(Node));
-	node = list->head;
-	while(node!=NULL){
-		if(data == node->data){
-			return node;
-		}else{
+void delList(List *list,int k){
+	if(k<=1){
+		list->head = list->head->next;
+		return;
+	}else{
+		Node *node = list->head;
+		for(int size=1;size<k-1;size++){
+			if(node == NULL){
+				return;
+			}
 			node = node->next;
 		}
+		node->next = node->next->next;
+		return;
 	}
-	return NULL;
+}
+DataType getdata(List *list,int k){
+	Node *node = list->head;
+	int size=1;
+	if(size !=k){
+		node = node->next;
+		size++;
+	}
+	return node->data;
+}
+Node* find(List *list,DataType data){
+	Node *node = list->head->next;
+	while(node && node->data != data){
+		node = node->next;
+	}
+	return node;
+}
+void printList(List *list){
+	Node *node = (Node *)malloc(sizeof(Node));
+	node = list->head;
+	while(node !=NULL){
+		printf("%d\t",node->data);
+		node = node->next;
+	}
+	printf("\n");
+	return;
 }
 int getLength(List *list){
 	Node *node = (Node*)malloc(sizeof(Node));
@@ -74,4 +142,17 @@ int getLength(List *list){
 	printf("display finished!\n");
 	return;
 }
-
+void clearList(List *list){
+	if(list->head == NULL){
+		return;
+	}
+	Node *p,*q;
+	p = list->head;
+	while(p){
+		q=p;
+		p=p->next;
+		free(q);
+	}
+	list->head = NULL;
+	return;
+}
